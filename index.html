@@ -1,0 +1,72 @@
+
+<html>
+<head>
+<title>dev061-02_Twitter_API_Basic</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script src="http://maps.google.com/maps/api/js?key=AIzaSyAos_3FwR7dElfxNiO6KbPfgd3GtyiihEk&language=ja"></script>
+</head>
+<body>
+<input type="text" id="id02" name="name" size="30" maxlength="20">
+<button id="id01">検索する</button>
+<script>
+var Button01 = document.querySelector('#id01');
+Button01.addEventListener('click', myFunc1);
+
+function myFunc1(){
+ // console.log("myFunc1");
+ // alert("myFunc1");
+
+Input1=document.getElementById("id02").value;
+
+//url="https://maps.googleapis.com/maps/api/geocode/json?address=東京駅&key=AIzaSyAos_3FwR7dElfxNiO6KbPfgd3GtyiihEk"
+url="https://maps.googleapis.com/maps/api/geocode/json?address=" + Input1 + "&key=AIzaSyAos_3FwR7dElfxNiO6KbPfgd3GtyiihEk"
+//alert(Input1);
+
+xmlhttp = new XMLHttpRequest();
+xmlhttp.open("GET", url);
+xmlhttp.onreadystatechange = function() {
+if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+     xhrres = xmlhttp.responseText;
+     //console.log(xhrres);
+a=JSON.parse(xhrres);
+console.log(a.results[0].geometry.location.lat);
+console.log(a.results[0].geometry.location.lng);
+
+MyLatLng1 = new google.maps.LatLng(a.results[0].geometry.location.lat, a.results[0].geometry.location.lng);
+Options1 = {
+ zoom: 15,      //地図の縮尺値
+ center: MyLatLng1,    //地図の中心座標
+ mapTypeId: 'roadmap'   //地図の種類
+};
+map1 = new google.maps.Map(document.getElementById('map'), Options1);
+
+MyLatLng2 = new google.maps.LatLng(a.results[0].geometry.location.lat, a.results[0].geometry.location.lng);
+Options2 = {
+ zoom: 17,      //地図の縮尺値
+ center: MyLatLng2,    //地図の中心座標
+ mapTypeId: 'roadmap'   //地図の種類
+};
+map2 = new google.maps.Map(document.getElementById('map2'), Options2);
+
+MyLatLng3 = new google.maps.LatLng(a.results[0].geometry.location.lat, a.results[0].geometry.location.lng);
+Options3 = {
+ zoom: 19,      //地図の縮尺値
+ center: MyLatLng3,    //地図の中心座標
+ mapTypeId: 'roadmap'   //地図の種類
+};
+map3 = new google.maps.Map(document.getElementById('map3'), Options3);
+
+}
+}
+xmlhttp.send();
+}
+</script>
+
+
+<div id="map" style="height:400px;width:400px;position:absolute; top:50px; left:10px"></div>
+<div id="map2" style="height:400px;width:400px;position:absolute; top:50px; left:400px"></div>
+<div id="map3" style="height:400px;width:400px;position:absolute; top:50px; left:800px"></div>
+
+
+</body>
+</html>
